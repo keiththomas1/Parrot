@@ -1,7 +1,7 @@
 Parrot
 ======
 
-A web browser with a focus on giving the user visual data based on their activities.
+A light-weight web browser.
 
 <h3>Features:</h3>
 - Standard web browser features like back, forward, refresh, home, etc.
