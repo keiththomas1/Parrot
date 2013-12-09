@@ -19,3 +19,9 @@ C:\Users\Keith\Dropbox\School\CS341\WebBrowser\WebBrowser\obj\Debug\WebBrowser.M
 C:\Users\Keith\Dropbox\School\CS341\WebBrowser\Parrot\WebBrowser\bin\Debug\WebBrowser.exe.config
 C:\Users\Keith\Dropbox\School\CS341\WebBrowser\Parrot\WebBrowser\obj\Debug\WebBrowser.exe
 C:\Users\Keith\Dropbox\School\CS341\WebBrowser\Parrot\WebBrowser\obj\Debug\WebBrowser.pdb
+C:\Users\Keith\Dropbox\School\CS341\WebBrowser\Parrot\WebBrowser\bin\Debug\WebBrowser.exe
+C:\Users\Keith\Dropbox\School\CS341\WebBrowser\Parrot\WebBrowser\bin\Debug\WebBrowser.pdb
+C:\Users\Keith\Dropbox\School\CS341\WebBrowser\Parrot\WebBrowser\obj\Debug\WebBrowser.csprojResolveAssemblyReference.cache
+C:\Users\Keith\Dropbox\School\CS341\WebBrowser\Parrot\WebBrowser\obj\Debug\WebBrowser.MainForm.resources
+C:\Users\Keith\Dropbox\School\CS341\WebBrowser\Parrot\WebBrowser\obj\Debug\WebBrowser.Properties.Resources.resources
+C:\Users\Keith\Dropbox\School\CS341\WebBrowser\Parrot\WebBrowser\obj\Debug\WebBrowser.csproj.GenerateResource.Cache

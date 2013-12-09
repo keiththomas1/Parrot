@@ -16,8 +16,27 @@ namespace WebBrowser
         {
             InitializeComponent();
 
-            
+            splitContainer2.SplitterDistance = 0;
+            splitContainer2.IsSplitterFixed = true;
+            // Set up text for tabs
+            tabPage1.Text = "Tab 1";
+            tabPage2.Text = "+";
+
+            MaintainBoundaries();
+
             webBrowser.Url = new Uri("http://www.google.com");
+        }
+
+        // Ensures that all of the moving parts are kept as-is. For example,
+        // we don't want splitContainer1 changing it's splitterDistance.
+        private void MaintainBoundaries()
+        {
+            splitContainer1.SplitterDistance = 50;
+
+            Point p = new Point();
+            p.X = splitContainer2.SplitterDistance;
+            p.Y = tabControl1.Location.Y;
+            tabControl1.Location = p;
         }
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -42,7 +61,6 @@ namespace WebBrowser
             if (webBrowser.CanGoBack)
             {
                 webBrowser.GoBack();
-                
             }
             textBox1.Text = webBrowser.Url.ToString();
         }
@@ -65,7 +83,35 @@ namespace WebBrowser
 
         private void resizeEnded(object sender, EventArgs e)
         {
-            splitContainer1.SplitterDistance = 30;
+            splitContainer1.SplitterDistance = 50;
+
+            Point p = new Point();
+            p.X = splitContainer2.SplitterDistance;
+            p.Y = tabControl1.Location.Y;
+            tabControl1.Location = p;
+            tabControl1.SelectedTab.Text = "Hello";
+            
+        }
+
+        private void onKeyPress(object sender, KeyPressEventArgs e)
+        {
+        }
+
+        private void onURLKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                webBrowser.Navigate(textBox1.Text);
+                
+            }
+        }
+
+        private void onChangeSelection(object sender, EventArgs e)
+        {
+            //if (tabControl1.SelectedTab == )
+            {
+                
+            }
         }
     }
 }
