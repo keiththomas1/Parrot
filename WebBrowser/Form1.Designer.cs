@@ -32,7 +32,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button2 = new System.Windows.Forms.Button();
             this.forwardButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
@@ -40,14 +39,13 @@
             this.backButton = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.webBrowser = new System.Windows.Forms.WebBrowser();
+            this.closeTabButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,8 +59,8 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(160)))), ((int)(((byte)(61)))));
+            this.splitContainer1.Panel1.Controls.Add(this.closeTabButton);
             this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
-            this.splitContainer1.Panel1.Controls.Add(this.button2);
             this.splitContainer1.Panel1.Controls.Add(this.forwardButton);
             this.splitContainer1.Panel1.Controls.Add(this.button1);
             this.splitContainer1.Panel1.Controls.Add(this.refreshButton);
@@ -73,7 +71,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(745, 392);
+            this.splitContainer1.Size = new System.Drawing.Size(935, 392);
             this.splitContainer1.SplitterDistance = 51;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -81,11 +79,12 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.HotTrack = true;
             this.tabControl1.Location = new System.Drawing.Point(156, 30);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(4, 3);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(507, 22);
+            this.tabControl1.Size = new System.Drawing.Size(712, 22);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.onChangeSelection);
@@ -95,7 +94,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(499, 0);
+            this.tabPage1.Size = new System.Drawing.Size(704, 0);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -104,19 +103,10 @@
             // 
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(499, 0);
+            this.tabPage2.Size = new System.Drawing.Size(569, 0);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(648, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(85, 23);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Show Stats";
-            this.button2.UseVisualStyleBackColor = true;
             // 
             // forwardButton
             // 
@@ -137,6 +127,7 @@
             this.button1.Size = new System.Drawing.Size(40, 26);
             this.button1.TabIndex = 5;
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // refreshButton
             // 
@@ -182,7 +173,6 @@
             // 
             this.splitContainer2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             // 
@@ -190,34 +180,31 @@
             // 
             this.splitContainer2.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(210)))), ((int)(((byte)(123)))));
             this.splitContainer2.Panel1MinSize = 0;
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.webBrowser);
-            this.splitContainer2.Size = new System.Drawing.Size(745, 337);
-            this.splitContainer2.SplitterDistance = 151;
+            this.splitContainer2.Size = new System.Drawing.Size(935, 337);
+            this.splitContainer2.SplitterDistance = 189;
             this.splitContainer2.TabIndex = 1;
             // 
-            // webBrowser
+            // closeTabButton
             // 
-            this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser.Name = "webBrowser";
-            this.webBrowser.ScrollBarsEnabled = false;
-            this.webBrowser.Size = new System.Drawing.Size(588, 335);
-            this.webBrowser.TabIndex = 1;
-            this.webBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.finishedNavigating);
+            this.closeTabButton.Location = new System.Drawing.Point(118, 29);
+            this.closeTabButton.Name = "closeTabButton";
+            this.closeTabButton.Size = new System.Drawing.Size(36, 23);
+            this.closeTabButton.TabIndex = 7;
+            this.closeTabButton.Text = "X";
+            this.closeTabButton.UseVisualStyleBackColor = true;
+            this.closeTabButton.Click += new System.EventHandler(this.closeTabButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(745, 392);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.ClientSize = new System.Drawing.Size(935, 392);
             this.Controls.Add(this.splitContainer1);
             this.Name = "MainForm";
             this.Text = "Parrot";
             this.ResizeEnd += new System.EventHandler(this.resizeEnded);
+            this.Enter += new System.EventHandler(this.onWindowEnterFocus);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onKeyPress);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -225,7 +212,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -241,12 +227,11 @@
         private System.Windows.Forms.Button forwardButton;
         private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.WebBrowser webBrowser;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Button closeTabButton;
 
 
 

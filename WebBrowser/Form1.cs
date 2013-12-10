@@ -12,6 +12,11 @@ namespace WebBrowser
 {
     public partial class MainForm : Form
     {
+        private BrowserController browserController;
+        private UserSettings userSettings;
+        private System.Windows.Forms.WebBrowser currentBrowser;
+        private List<TabPage> tabs;
+
         public MainForm()
         {
             InitializeComponent();
@@ -22,29 +27,48 @@ namespace WebBrowser
             splitContainer2.IsSplitterFixed = true;
 
             // Set up text for tabs
-            tabPage1.Text = "Tab 1";
+            tabPage1.Text = "New Tab";
             tabPage2.Text = "+";
+            tabs = new List<TabPage>();
+            tabs.Add(tabPage1);
+            tabs.Add(tabPage2);
 
             // Set up browserController and add the initial browser to it.
             browserController = new BrowserController();
-            browserController.Add( webBrowser );
+            // Add a new browser window. (Along with all it's details)
+            System.Windows.Forms.WebBrowser wb = browserController.Add();
+            currentBrowser = wb;
+            splitContainer2.Panel2.Controls.Add(currentBrowser);
+            currentBrowser.Url = new Uri("http://www.google.com");
+            currentBrowser.Dock = DockStyle.Fill;
+            currentBrowser.DocumentCompleted +=
+                new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(webBrowserCompleted);
+
+            userSettings = new UserSettings();
+            userSettings.HomePageString = "http://www.bing.com";
 
             UpdateProperties();
-
-            webBrowser.Url = new Uri("http://www.google.com");
         }
 
         // Ensures that all of the moving parts are kept as-is. For example,
         // we don't want splitContainer1 changing it's splitterDistance.
         private void UpdateProperties()
         {
+            // Cancel out any auto re-sizing of splitContainer1
+            splitContainer1.SplitterDistance = 50;
+
+            // Change location of tab system if splitContainer2.Panel1 is out
             Point p = new Point();
             p.X = splitContainer2.SplitterDistance;
             p.Y = tabControl1.Location.Y;
+            closeTabButton.Location = p;
+            p.X = splitContainer2.SplitterDistance + 36;
+            p.Y = tabControl1.Location.Y;
             tabControl1.Location = p;
 
-            backButton.Enabled = webBrowser.CanGoBack;
-            forwardButton.Enabled = webBrowser.CanGoForward;
+            // Enable/disable back/forward buttons on the go
+            backButton.Enabled = currentBrowser.CanGoBack;
+            forwardButton.Enabled = currentBrowser.CanGoForward;
         }
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -60,40 +84,39 @@ namespace WebBrowser
         // On go button press.
         private void button2_Click(object sender, EventArgs e)
         {
-            webBrowser.Navigate(textBox1.Text);
+            currentBrowser.Navigate(textBox1.Text);
         }
 
         // On back button press.
         private void button1_Click(object sender, EventArgs e)
         {
-            if (webBrowser.CanGoBack)
+            if (currentBrowser.CanGoBack)
             {
-                webBrowser.GoBack();
+                currentBrowser.GoBack();
             }
-            textBox1.Text = webBrowser.Url.ToString();
+            textBox1.Text = currentBrowser.Url.ToString();
         }
 
         private void refreshButton_Click(object sender, EventArgs e)
         {
-            webBrowser.Refresh();
+            currentBrowser.Refresh();
             
         }
 
         private void forwardButton_Click(object sender, EventArgs e)
         {
-            webBrowser.GoForward();
+            currentBrowser.GoForward();
         }
 
         private void finishedNavigating(object sender, WebBrowserNavigatedEventArgs e)
         {
-            textBox1.Text = webBrowser.Url.ToString();
+            textBox1.Text = currentBrowser.Url.ToString();
 
             UpdateProperties();
         }
 
         private void resizeEnded(object sender, EventArgs e)
         {
-            splitContainer1.SplitterDistance = 50;
 
             UpdateProperties();
         }
@@ -106,34 +129,84 @@ namespace WebBrowser
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                webBrowser.Navigate(textBox1.Text);
+                currentBrowser.Navigate(textBox1.Text);
             }
+        }
+
+        private void webBrowserCompleted(object sender, EventArgs ev)
+        {
+            System.Windows.Forms.WebBrowser wb = (System.Windows.Forms.WebBrowser)sender;
+            int index = browserController.FindBrowserIndex(wb);
+            tabs[index].Text = wb.DocumentTitle;
+
+            UpdateProperties();
+        }
+
+        private void AddNewTabAndBrowser()
+        {
+            // Add a new browser window.
+            System.Windows.Forms.WebBrowser wb = browserController.Add();
+            currentBrowser = wb;
+            splitContainer2.Panel2.Controls.Add(currentBrowser);
+            currentBrowser.Url = userSettings.HomePageURI;
+            currentBrowser.Dock = DockStyle.Fill;
+
+            // Set current "+" tab to new tab name, and make a new "+" tab.
+            int browserIndex = browserController.BrowserCount;
+            tabControl1.SelectedTab.Text = "New Tab";
+            TabPage myTabPage = new TabPage("+");
+            tabControl1.TabPages.Add(myTabPage);
+            tabs.Add(myTabPage);
+
+            textBox1.Text = userSettings.HomePageString;
+
+            wb.DocumentCompleted +=
+                new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(webBrowserCompleted);
         }
 
         private void onChangeSelection(object sender, EventArgs e)
         {
             if ("+" == tabControl1.SelectedTab.Text)
             {
-                // Add a new browser window.
-                System.Windows.Forms.WebBrowser wb = browserController.Add();
-                splitContainer2.Panel2.Controls.Add(wb);
-                wb.Dock = DockStyle.Fill;
-
-                // Set current "+" tab to new tab name, and make a new "+" tab.
-                int browserIndex = browserController.BrowserCount;
-                tabControl1.SelectedTab.Text = "Tab " + browserIndex.ToString();
-                TabPage myTabPage = new TabPage("+");
-                tabControl1.TabPages.Add(myTabPage);
-
-                Console.Write("+ pressed\n");
+                AddNewTabAndBrowser();
             }
             else
             {
                 int index = tabControl1.TabPages.IndexOf(tabControl1.SelectedTab);
                 browserController.ChangeBrowser(index);
+                currentBrowser = browserController.GetCurrentBrowser(index);
+
+                try
+                {
+                    textBox1.Text = browserController.GetURIAtIndex(index).ToString();
+                }
+                catch (System.NullReferenceException err)
+                {
+                    textBox1.Text = userSettings.HomePageString;
+                    Console.Write(err.Message);
+                }
             }
         }
 
-        private BrowserController browserController;
+        private void closeTabButton_Click(object sender, EventArgs e)
+        {
+            int index = browserController.FindBrowserIndex(currentBrowser);
+            browserController.Delete(index);
+            currentBrowser = browserController.GetCurrentBrowser(0);
+
+            tabControl1.TabPages.RemoveAt(index);
+            tabs.RemoveAt(index);
+        }
+
+        private void onWindowEnterFocus(object sender, EventArgs e)
+        {
+            UpdateProperties();
+        }
+
+        // Home button press
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            currentBrowser.Navigate(userSettings.HomePageString);
+        }
     }
 }

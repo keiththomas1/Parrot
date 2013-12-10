@@ -27,6 +27,19 @@ namespace WebBrowser
             }
         }
 
+        public System.Windows.Forms.WebBrowser GetCurrentBrowser(int index)
+        {
+            try
+            {
+                return browsers[index];
+            }
+            catch (Exception e)
+            {
+                Console.Write("No browser at that index..\n");
+                return null;
+            }
+        }
+
         public void ChangeBrowser(int index)
         {
             browsers[index].Visible = true;
@@ -48,7 +61,36 @@ namespace WebBrowser
         public void Add(System.Windows.Forms.WebBrowser wb)
         {
             browsers.Add(wb);
+            DisableOtherBrowsers(browserCount);
             browserCount++;
+        }
+
+        public int FindBrowserIndex(System.Windows.Forms.WebBrowser wb)
+        {
+            for (int i = 0; i < browserCount; i++)
+            {
+                // If not current browser, disable
+                if (browsers[i] == wb)
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
+        public Uri GetURIAtIndex(int index)
+        {
+            return browsers[index].Url;
+        }
+
+        public void Delete(int index)
+        {
+            System.Windows.Forms.WebBrowser wb = browsers[index];
+            browsers.RemoveAt(index);
+            //browsers.Remove(browsers[index]);
+            wb.Dispose();
+            browserCount--;
+            ChangeBrowser(0);
         }
 
         public int BrowserCount 
