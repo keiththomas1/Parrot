@@ -1,4 +1,11 @@
 Parrot
 ======
 
-A web browser with the unique functionality of providing the user with a guage of how productive they are being.
+A light-weight web browser.
+
+<h3>Features:</h3>
+- Standard web browser features like back, forward, refresh, home, etc.
+- Multi-threaded tabbing system.
+
+<h3>Authors:</h3>
+- Keith Thomas
